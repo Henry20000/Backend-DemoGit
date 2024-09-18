@@ -52,8 +52,10 @@ const loginUser = async (req, res) => {
         const { refresh_token, ...newReponse } = response
         //console.log('response', response);
         res.cookie('refresh_token', refresh_token, {
-            HttpOnly: true,
-            Secure: true,
+            httpOnly: true,
+            secure: false,
+            samesite: 'strict',
+            path: '/'
         })
         return res.status(200).json(newReponse)
     } catch (e) {
@@ -130,6 +132,7 @@ const getDetailsUser = async (req, res) => {
 }
 
 const refreshToken = async (req, res) => {
+    console.log('req.cookies.refresh_token', req.cookies.refresh_token);
     try {
         const token = req.cookies.refresh_token
         if (!token) {
@@ -146,6 +149,20 @@ const refreshToken = async (req, res) => {
         })
     }
 }
+
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('refresh_token')
+            return res.status(200).json({
+                status: 'OK',
+                message: 'Logout successfully'
+            })
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     createUser,
     loginUser,
@@ -153,5 +170,6 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
-    refreshToken
+    refreshToken,
+    logoutUser
 }
