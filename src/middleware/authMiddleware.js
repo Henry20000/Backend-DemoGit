@@ -13,11 +13,10 @@ const authMiddleWare = (req, res, next) => {
     });
   }
 
-  console.log("token :>> ", token);
   //const token = req.headers.token.split(' ')[1];
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
-      console.log("err", err);
+      //console.log("err", err);
       return res.status(404).json({
         message: "The authemtication 1",
         status: "ERROR",
