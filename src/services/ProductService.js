@@ -90,12 +90,14 @@ const deleteProduct = (id) => {
 const deleteManyProduct = (ids) => {
   return new Promise(async (resolve, reject) => {
     try {
-      await Product.deleteMany({ _id: ids });
+      const result = await Product.deleteMany({ _id: ids.id });
+      //console.log('result  :>> ', result );
       resolve({
         status: "OK",
         message: "Delete product success",
       });
     } catch (e) {
+        //console.log('e :>> ', e);
       reject(e);
     }
   });
